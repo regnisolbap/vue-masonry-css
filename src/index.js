@@ -30,6 +30,9 @@ const props = {
   columnAttr: {
     type: [Object],
     default: () => ({})
+  },
+  transition: {
+    type: [Object]
   }
 };
 
@@ -182,12 +185,61 @@ const component = {
 
     const columns = columnsContainingChildren.map((children, index) => {
       /// Create column element and inject the children
-      return createElement(this.columnTag, {
+      let columnTag = this.columnTag;
+
+      let columnElementOptions = {
         key: index + '-' + columnsContainingChildren.length,
         style: this.css ? columnStyle : null,
         class: this.columnClass,
         attrs: this.columnAttr
-      }, children); // specify child items here
+      };
+
+      if (this.transition) {
+        columnTag = 'transition-group';
+
+        columnElementOptions = {
+          key: index + '-' + columnsContainingChildren.length,
+          style: this.css ? columnStyle : null,
+          class: this.columnClass,
+          attrs: Object.assign(
+            {
+              name: this.transition.name || ''
+            },
+            this.columnAttr
+          ),
+          on: {
+            beforeEnter: this.transition.beforeEnter || (() => {}),
+            beforeLeave: this.transition.beforeLeave || (() => {}),
+            beforeAppear: this.transition.beforeAppear || (() => {}),
+            enter: this.transition.enter || (() => {}),
+            leave: this.transition.leave || (() => {}),
+            afterEnter: this.transition.afterEnter || (() => {}),
+            afterLeave: this.transition.afterLeave || (() => {}),
+            afterAppear: this.transition.afterAppear || (() => {}),
+            enterCancelled: this.transition.enterCancelled || (() => {}),
+            leaveCancelled: this.transition.leaveCancelled || (() => {}),
+            appearCancelled: this.transition.appearCancelled || (() => {})
+          },
+          props: {
+            appear: this.transition.appear || false,
+            duration: this.transition.duration,
+            css: this.transition.css || true,
+            tag: this.transition.tag || 'span',
+            appearActiveClass: this.transition.appearActiveClass || '',
+            appearClass: this.transition.appearClass || '',
+            appearToClass: this.transition.appearToClass || '',
+            enterActiveClass: this.transition.enterActiveClass || '',
+            enterToClass: this.transition.enterToClass || '',
+            enterClass: this.transition.enterClass || '',
+            leaveActiveClass: this.transition.leaveActiveClass || '',
+            leaveClass: this.transition.leaveClass || '',
+            leaveToClass: this.transition.leaveToClass || '',
+            moveClass: this.transition.moveClass || ''
+          }
+        };
+      }
+
+      return createElement(columnTag, columnElementOptions, children);
     });
 
     const containerStyle = {
