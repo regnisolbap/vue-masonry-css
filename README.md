@@ -10,9 +10,10 @@ Our need for a simple Masonry layout that was fast, used Vue's Virtual DOM witho
 
 Between flexbox, css columns, css grid we settled on plain ol' div's and a dab of flexbox that allows for "fluid" responsive layouts by default but most importantly is true to Vue's rendering lifecycle.
 
-*`vue-masonry-css`* Is a Vue Component with a simple interface to order items into the desired columns at specified breakpoints. With minimal CSS this leads to a quick, reliable solution that also has great browser support along with fast rendering performance ..just as Vue.js intended.
+_`vue-masonry-css`_ Is a Vue Component with a simple interface to order items into the desired columns at specified breakpoints. With minimal CSS this leads to a quick, reliable solution that also has great browser support along with fast rendering performance ..just as Vue.js intended.
 
 😄 What does this do
+
 - Responsive! ..always
 - IE 10+ CSS Support (and, IE9)
 - No Dependencies - Which means no need for jQuery!
@@ -21,6 +22,7 @@ Between flexbox, css columns, css grid we settled on plain ol' div's and a dab o
 - Allows for Gaps (Gutters) between elements
 
 🏳️ What doesn't this do
+
 - Works with elements with different widths
 - Sorting based on height - This kills performance, so if you don't need it we're here for you
 
@@ -45,6 +47,7 @@ Vue.use(VueMasonry);
 ```
 
 In your HTML template...
+
 ```HTML
 <masonry
   :cols="3"
@@ -71,13 +74,34 @@ _note:_ The `cols=` attribute needs to use Vues bind method to evaluate objects.
 
 In the above example, the number of columns will default to 4. When the window's is between 1000px and 700px, the number of columns will be 3. The key represents the `max-width` of the window, and `vue-masonry-css` will use the largest key that satisfies this.
 
+### Transitions
+
+You can add transition-group to column items, just pass a transition object to the component. It can take the same properties as a transition-group component as in the docs (https://vuejs.org/v2/api/index.html#transition-group).
+
+In your HTML template...
+
+```HTML
+<masonry
+  :cols="3"
+  :gutter="30"
+  :transition="{
+    name: 'fade',
+    appear: true
+  }"
+  >
+  <div v-for="(item, index) in items" :key="index">Item: {{index + 1}}</div>
+</masonry>
+```
+
 ### Example
 
 https://paulcollett.github.io/vue-masonry-css/demo/
 
 ### Suggestions & Issues
+
 https://github.com/paulcollett/vue-masonry-css
 
 **Contact me direct:**
-* https://github.com/paulcollett
-* http://paulcollett.com
+
+- https://github.com/paulcollett
+- http://paulcollett.com
